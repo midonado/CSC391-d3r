@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+
+body {
+  display: grid;
+  place-items: center;
+  height: 100vmin;
+}
+
+.bar-chart {
+  position: relative;
+  border: dashed 4px rgb(0 0 180);
+  border-radius: 10px;
+  background: rgb(120 120 255 / 0.15);
+}
+
+.bar {
+  fill: orange;
+}
+
+.label {
+  font-size: 9pt;
+}
+
+.category {
+  text-anchor: end;
+}
