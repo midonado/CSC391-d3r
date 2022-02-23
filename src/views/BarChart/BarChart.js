@@ -23,12 +23,14 @@ const BarChart = ({ data = [], elements = [], dimensions = {} }) => {
 
         console.log(data);
 
-        const max = d3.max(data, d => d.time);
+        // const max = d3.max(data, d => d.time);
+        const max = 37;
 
+        
         const x = d3.scaleBand()
             .rangeRound([0, width])
             .padding(0.1)
-            .domain(data.map(d => d.label));
+            .domain(data.map(d => d.label).sort());
 
         const y = d3.scaleLinear()
             .rangeRound([height, 0])

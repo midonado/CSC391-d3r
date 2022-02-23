@@ -25,13 +25,14 @@ export default function App() {
         arr.push({
           lines: +d.lines,
           times: [+d.time],
-          highlight: d.hihlight === "TRUE",
+          highlight: d.highlight === "TRUE" ? true : false,
           label: id(d)
         });
       }
       else {
         let index = visited.indexOf(label);
         arr[index].times.push(+d.time);
+        arr[index].time += +d.time;
       }
     });
 
