@@ -1,45 +1,12 @@
 /** MultilineChart.js */
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "https://cdn.skypack.dev/d3@7";
-import csvFile from "../../data/dataFromClass.csv";
 
-const BarChart = ({ elements = [], dimensions = {} }) => {
-    const [data, setData] = useState([]);
-
+const BarChart = ({ data = [], elements = [], dimensions = {} }) => {
     const svgRef = useRef(null);
     const { width, height, margin = {} } = dimensions;
     const svgWidth = width + margin.left + margin.right;
     const svgHeight = height + margin.top + margin.bottom;
-
-    const id = (d) => d.lines + "_" + d.highlight;
-
-    const fetchCSV = async (dataAddress) => {
-        const arr = [];
-        const visited = [];
-        const visIndex = [];
-
-        d3.dsv(",", dataAddress, (d) => {
-            const label = id(d);
-
-            if (!visited.includes(label)) {
-                visited.push(label);
-                visIndex.push(arr.length - 1)
-
-                arr.push({
-                    lines: +d.lines,
-                    times: [+d.time],
-                    highlight: d.hihlight === "TRUE",
-                    label: id(d)
-                });
-            }
-            else {
-                let index = visited.indexOf(label);
-                arr[index].times.push(+d.time);
-            }
-        });
-
-        setData(arr);
-    }
 
     const svgEl = d3.select(svgRef.current)
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements
@@ -50,12 +17,10 @@ const BarChart = ({ elements = [], dimensions = {} }) => {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     useEffect(() => {
-        fetchCSV(csvFile);
-        
         data.forEach(d => {
             d.time = d3.mean(d.times);
         })
-        
+
         console.log(data);
 
         const max = d3.max(data, d => d.time);
@@ -92,7 +57,7 @@ const BarChart = ({ elements = [], dimensions = {} }) => {
 
         svg.append("g")
             .call(d3.axisLeft(y))
-    }, []);
+    }, [elements]);
 
     return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
 };
