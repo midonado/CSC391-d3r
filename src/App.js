@@ -7,41 +7,26 @@ import * as d3 from "https://cdn.skypack.dev/d3@7";
 import csvFile from "./data/dataFromClass.csv";
 
 export default function App() {
-  const [data, setData] = useState([]);
+  const [preLoad, setPreLoad] = useState([]);
   const id = (d) => d.lines + "_" + d.highlight;
 
-  const fetchCSV = async (dataAddress) => {
-    const arr = [];
-    const visited = [];
-    const visIndex = [];
-
-    d3.dsv(",", dataAddress, (d) => {
-      const label = id(d);
-
-      if (!visited.includes(label)) {
-        visited.push(label);
-        visIndex.push(arr.length - 1)
-
-        arr.push({
-          lines: +d.lines,
-          times: [+d.time],
-          highlight: d.highlight === "TRUE" ? true : false,
-          label: id(d)
-        });
-      }
-      else {
-        let index = visited.indexOf(label);
-        arr[index].times.push(+d.time);
-        arr[index].time += +d.time;
-      }
-    });
-
-    setData(arr);
+  const preLoadData = async (dataAddress) => {
+    setPreLoad([]);
   }
 
   useEffect(() => {
-    fetchCSV(csvFile);
+    preLoadData();
   }, [])
+
+  const data =
+    [{ highlight: true,label: '1_TRUE', time: 3.477368421052631 }
+      , { highlight: false,label: '4_FALSE', time: 36.59315789473684 }
+      , { highlight: false,label: '2_FALSE', time: 31.410526315789472 }
+      , { highlight: false,label: '3_FALSE', time: 22.92684210526316 }
+      , { highlight: true,label: '4_TRUE', time: 3.3436842105263156 }
+      , { highlight: false,label: '1_FALSE', time: 6.936842105263159 }
+      , { highlight: true,label: '2_TRUE', time: 1.7405263157894737 }
+      , { highlight: true,label: '3_TRUE', time: 2.3168421052631576 }];
 
   const dimensions = {
     width: 960,
@@ -54,13 +39,11 @@ export default function App() {
     }
   }
 
-  const attr = [{ color: "red" }]
 
   return (
     <div className="App">
       <BarChart
         data={data}
-        attributes={attr}
         dimensions={dimensions}
       />
     </div>

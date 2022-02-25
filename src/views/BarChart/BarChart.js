@@ -2,7 +2,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "https://cdn.skypack.dev/d3@7";
 
-const BarChart = ({ data = [], elements = [], dimensions = {} }) => {
+const BarChart = ({ data = [], dimensions = {} }) => {
+    const [flag, setFlag] = useState(true);
+    const [attr, setAttr] = useState({colorToggle: false, color: "#aaa"});
     const svgRef = useRef(null);
     const { width, height, margin = {} } = dimensions;
     const svgWidth = width + margin.left + margin.right;
@@ -11,22 +13,27 @@ const BarChart = ({ data = [], elements = [], dimensions = {} }) => {
     const svgEl = d3.select(svgRef.current)
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements
 
-    const svg = svgEl
-        .attr("class", "bar-chart")
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+    const updateArray = () => {
+        setFlag(!flag);
+    }
+
+    const handleColorClick = () => {
+        updateArray();
+        const temp = attr;
+        temp.colorToggle = !temp.colorToggle;
+        setAttr(temp);
+    }
 
     useEffect(() => {
-        data.forEach(d => {
-            d.time = d3.mean(d.times);
-        })
+        const svg = svgEl
+            .style("background", attr.colorToggle ? attr.color : "#fff")
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        console.log(data);
+        attr.colorToggle ? console.log(attr, attr.color) : console.log(attr, "#fff")
 
-        // const max = d3.max(data, d => d.time);
-        const max = 37;
+        const max = d3.max(data, d => d.time);
 
-        
         const x = d3.scaleBand()
             .rangeRound([0, width])
             .padding(0.1)
@@ -59,9 +66,15 @@ const BarChart = ({ data = [], elements = [], dimensions = {} }) => {
 
         svg.append("g")
             .call(d3.axisLeft(y))
-    }, [elements]);
 
-    return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
+    }, [data, attr, flag]);
+
+    return (<>
+        <svg ref={svgRef} width={svgWidth} height={svgHeight} />
+        <button onClick={handleColorClick} >
+            Background Color
+        </button>
+    </>);
 };
 
 export default BarChart;
