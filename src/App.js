@@ -2,13 +2,9 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./views/BarChart/BarChart";
 import "./App.css";
-// import csvFile from "./data/dataFromClass.csv";
-import * as d3 from "https://cdn.skypack.dev/d3@7";
-import csvFile from "./data/dataFromClass.csv";
 
 export default function App() {
   const [preLoad, setPreLoad] = useState([]);
-  const id = (d) => d.lines + "_" + d.highlight;
 
   const preLoadData = async (dataAddress) => {
     setPreLoad([]);
@@ -18,15 +14,14 @@ export default function App() {
     preLoadData();
   }, [])
 
-  const data =
-    [{ highlight: true,label: '1_TRUE', time: 3.477368421052631 }
-      , { highlight: false,label: '4_FALSE', time: 36.59315789473684 }
-      , { highlight: false,label: '2_FALSE', time: 31.410526315789472 }
-      , { highlight: false,label: '3_FALSE', time: 22.92684210526316 }
-      , { highlight: true,label: '4_TRUE', time: 3.3436842105263156 }
-      , { highlight: false,label: '1_FALSE', time: 6.936842105263159 }
-      , { highlight: true,label: '2_TRUE', time: 1.7405263157894737 }
-      , { highlight: true,label: '3_TRUE', time: 2.3168421052631576 }];
+  const data = [{ highlight: true, label: '1_TRUE', time: 3.477368421052631 },
+                { highlight: false, label: '4_FALSE', time: 36.59315789473684 },
+                { highlight: false, label: '2_FALSE', time: 31.410526315789472 },
+                { highlight: false, label: '3_FALSE', time: 22.92684210526316 },
+                { highlight: true, label: '4_TRUE', time: 3.3436842105263156 },
+                { highlight: false, label: '1_FALSE', time: 6.936842105263159 },
+                { highlight: true, label: '2_TRUE', time: 1.7405263157894737 },
+                { highlight: true, label: '3_TRUE', time: 2.3168421052631576 }];
 
   const dimensions = {
     width: 960,
@@ -38,7 +33,6 @@ export default function App() {
       left: 40
     }
   }
-
 
   return (
     <div className="App">
