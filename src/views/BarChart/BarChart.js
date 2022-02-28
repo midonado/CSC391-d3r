@@ -4,7 +4,10 @@ import * as d3 from "https://cdn.skypack.dev/d3@7";
 
 const BarChart = ({ data = [], dimensions = {} }) => {
     const [flag, setFlag] = useState(true);
-    const [attr, setAttr] = useState({colorToggle: false, color: "#aaa"});
+    const [attr, setAttr] = useState({
+        bgColorToggle: false, bgColor: "#aaa",
+        barColorToggle: true, barColorDefault: "#333",
+    });
     const svgRef = useRef(null);
     const { width, height, margin = {} } = dimensions;
     const svgWidth = width + margin.left + margin.right;
@@ -17,32 +20,21 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         setFlag(!flag);
     }
 
-    const handleColorClick = () => {
+    const handleBgColorClick = () => {
         updateArray();
         const temp = attr;
-        temp.colorToggle = !temp.colorToggle;
+        temp.bgColorToggle = !temp.bgColorToggle;
         setAttr(temp);
     }
 
-    useEffect(() => {
-        const svg = svgEl
-            .style("background", attr.colorToggle ? attr.color : "#fff")
-            .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+    const handleBarColorClick = () => {
+        updateArray();
+        const temp = attr;
+        temp.barColorToggle = !temp.barColorToggle;
+        setAttr(temp);
+    }
 
-        attr.colorToggle ? console.log(attr, attr.color) : console.log(attr, "#fff")
-
-        const max = d3.max(data, d => d.time);
-
-        const x = d3.scaleBand()
-            .rangeRound([0, width])
-            .padding(0.1)
-            .domain(data.map(d => d.label).sort());
-
-        const y = d3.scaleLinear()
-            .rangeRound([height, 0])
-            .domain([0, max]);
-
+    const drawEntries = (svg, x, y) => {
         const entries = svg.selectAll("g")
             .data(data)
             .enter()
@@ -52,13 +44,33 @@ const BarChart = ({ data = [], dimensions = {} }) => {
             const entry = d3.select(this);
             entry.append("rect")
                 .attr("class", "bar")
-                .attr("x", x(d.label))
-                .attr("y", y(d.time))
-                .attr("height", height - y(d.time))
+                .attr("x", x(d.fruit))
+                .attr("y", y(d.count))
+                .attr("height", height - y(d.count))
                 .attr("width", x.bandwidth())
-                .style("fill", !d.highlight ? "#fff" : "#333")
+                .style("fill", attr.barColorToggle ? d => d.color : attr.barColorDefault)
                 .attr("stroke", "black")
         })
+    }
+
+    useEffect(() => {
+        const svg = svgEl
+            .style("background", attr.bgColorToggle ? attr.bgColor : "#fff")
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        const max = d3.max(data, d => d.count);
+
+        const x = d3.scaleBand()
+            .rangeRound([0, width])
+            .padding(0.1)
+            .domain(data.map(d => d.fruit).sort());
+
+        const y = d3.scaleLinear()
+            .rangeRound([height, 0])
+            .domain([0, max]);
+
+        drawEntries(svg, x, y);
 
         svg.append("g")
             .attr("transform", "translate(0," + (height) + ")")
@@ -67,13 +79,20 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         svg.append("g")
             .call(d3.axisLeft(y))
 
-    }, [data, attr, flag]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, flag]);
 
     return (<>
         <svg ref={svgRef} width={svgWidth} height={svgHeight} />
-        <button onClick={handleColorClick} >
-            Background Color
-        </button>
+
+        <div className="toggles">
+            <button onClick={handleBgColorClick} >
+                Background Color
+            </button>
+            <button onClick={handleBarColorClick} >
+                Bar Color
+            </button>
+        </div>
     </>);
 };
 
