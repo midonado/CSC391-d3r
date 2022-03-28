@@ -8,20 +8,33 @@ body {
   text-align: center;
   display: flex;
   gap: 1em;
-  flex-direction: column;
-  align-items: center;
 }
 
 .toggles {
   display: flex;
   gap: 1em;
+  flex-direction: column;
+}
+
+.chart-container {
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  text-align: start;
+}
+
+.chart-container > div, h1, h3 {
+  line-height: 1;
+  margin-top: 0;
 }
 
 .bar-chart {
-  position: relative;
-  border: dashed 4px rgb(0 0 180);
   border-radius: 10px;
-  background: rgb(120 120 255 / 0.15);
+}
+
+.bar-chart--border {
+  border-radius: 10px;
+  border: 1.5px solid black;
 }
 
 .bar {
@@ -29,9 +42,13 @@ body {
 }
 
 .label {
-  font-size: 9pt;
+  font-size: 1em;
 }
 
 .category {
   text-anchor: end;
+}
+
+.x-label, .y-label {
+  font-size: 1.25em;
 }
