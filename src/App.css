@@ -16,6 +16,17 @@ body {
   flex-direction: column;
 }
 
+.toggle-container {
+  display: flex;
+  flex-direction: column;
+  gap: .3em;
+}
+
+.toggle-container > p {
+  line-height: 1;
+  margin: 0;
+}
+
 .chart-container {
   display: flex;
   gap: 1em;
@@ -30,15 +41,7 @@ body {
 
 .bar-chart {
   border-radius: 10px;
-}
-
-.bar-chart--border {
-  border-radius: 10px;
-  border: 1.5px solid black;
-}
-
-.bar {
-  fill: orange;
+  background-size: contain;
 }
 
 .label {

@@ -1,6 +1,6 @@
 /** App.js */
 import React, { useState, useEffect } from "react";
-import BarChart from "./views/BarChart/BarChart";
+import BarChart from "./BarChart";
 import "./App.css";
 
 export default function App() {
