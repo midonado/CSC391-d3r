@@ -18,11 +18,11 @@ export default function App() {
 
   const fruitData = [
     { fruit: "Banana", count: 40, color: "yellow" },
-    { fruit: "Strawberry", count: 32, color: "red" },
     { fruit: "Blueberry", count: 18, color: "blue" },
+    { fruit: "Grape", count: 40, color: "rebeccapurple" },
     { fruit: "Mango", count: 56, color: "orange" },
     { fruit: "Pineapple", count: 45, color: "green" },
-    { fruit: "Grape", count: 40, color: "rebeccapurple" }];
+    { fruit: "Strawberry", count: 32, color: "red" }];
 
   const dimensions = {
     width: 960,
