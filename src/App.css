@@ -44,8 +44,8 @@ body {
   background-size: contain;
 }
 
-.label {
-  font-size: 1em;
+.tick text {
+  font-size: 1.4em;
 }
 
 .category {
@@ -53,5 +53,5 @@ body {
 }
 
 .x-label, .y-label {
-  font-size: 1.25em;
+  font-size: 1.5em;
 }

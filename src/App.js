@@ -19,19 +19,27 @@ export default function App() {
   const fruitData = [
     { fruit: "Banana", count: 40, color: "yellow" },
     { fruit: "Blueberry", count: 18, color: "blue" },
+    { fruit: "Coconut", count: 15, color: "#964B00" },
     { fruit: "Grape", count: 40, color: "rebeccapurple" },
-    { fruit: "Mango", count: 56, color: "orange" },
-    { fruit: "Pineapple", count: 45, color: "green" },
-    { fruit: "Strawberry", count: 32, color: "red" }];
+    { fruit: "Kiwi", count: 45, color: "limegreen" },
+    { fruit: "Orange", count: 56, color: "darkorange" },
+    { fruit: "Strawberry", count: 32, color: "red" },
+    { fruit: "Watermelon", count: 29, color: "lightcoral" }];
 
+    const fruitDataSmall = [
+      { fruit: "Banana", count: 40, color: "yellow" },
+      { fruit: "Blueberry", count: 18, color: "blue" },
+      { fruit: "Orange", count: 56, color: "darkorange" },
+      { fruit: "Strawberry", count: 32, color: "red" }];
+  
   const dimensions = {
     width: 960,
     height: 500,
     margin: {
-      top: 20,
-      right: 40,
-      bottom: 60,
-      left: 60
+      top: 50,
+      right: 50,
+      bottom: 70,
+      left: 70
     }
   }
 

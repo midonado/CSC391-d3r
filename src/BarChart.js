@@ -22,9 +22,9 @@ const BarChart = ({ data = [], dimensions = {} }) => {
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements
 
     const bgColors = ["#fff",
-        "#aaa",
-        "linear-gradient(#e66465, #9198e5)",
-        "url('./img/fruit-texture.jpg') repeat"]
+        "#ddd",
+        "linear-gradient(yellow, red)",
+        "url('./img/bg-Blueberry.png') repeat"]
 
     const bars = ["#333",
         d => d.color,
@@ -88,9 +88,11 @@ const BarChart = ({ data = [], dimensions = {} }) => {
     const drawAxisLines = (svg, x, y) => {
         svg.append("g")
             .attr("transform", "translate(0," + (height) + ")")
+            .attr("class", "x-grid")
             .call(d3.axisBottom(x))
 
         svg.append("g")
+            .attr("class", "y-grid")
             .call(d3.axisLeft(y))
     }
 
@@ -118,7 +120,8 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         switch (level) {
             case 1:
                 drawAxisLines(svg, x, y);
-                svg.selectAll(".tick").selectAll("text").attr("fill", "transparent")
+                svg.selectAll(".tick").selectAll("text").attr("fill", "transparent");
+                svg.selectAll(".x-grid").selectAll(".tick").attr("opacity", 0);
                 break;
 
             case 2:
@@ -144,7 +147,7 @@ const BarChart = ({ data = [], dimensions = {} }) => {
 
         d3.selectAll('line')
             .style('stroke-width', strokeWeight[attrSlider.gridline])
-            .style('opacity', 0.3)
+            .style('opacity', 0.33 * attrSlider.gridline)
 
         svg.selectAll('.domain').remove()
     }
@@ -164,10 +167,13 @@ const BarChart = ({ data = [], dimensions = {} }) => {
     }
 
     const shadeBars = () => {
-        d3.selectAll(".shade")
+        d3.selectAll(".shade-right")
             .attr("fill", "black")
             .attr("opacity", 0.5)
 
+        d3.selectAll(".shade-top")
+            .attr("fill", "black")
+            .attr("opacity", 0.2)
     }
 
     const definePatterns = (entry, d, x) => {
@@ -225,15 +231,21 @@ const BarChart = ({ data = [], dimensions = {} }) => {
                 ${right + depth},${bot - depth / 2} ${right},${bot}`
         }
 
-        var shade = {
-            face: "shade",
+        var shadeRight = {
+            face: "shade-right",
             points:
-                `${right},${bot} ${right + depth},${bot - depth / 2} 
-                ${right + depth},${top - depth / 2} ${left + depth},${top - depth / 2} 
-                ${left},${top} ${right},${top}`
+                `${right},${top} ${right + depth},${top - depth / 2} 
+                ${right + depth},${bot - depth / 2} ${right},${bot}`
         }
 
-        const faces = [frontFace, topFace, rightFace, shade];
+        var shadeTop = {
+            face: "shade-top",
+            points:
+                `${left},${top} ${right},${top} ${right + depth},${top - depth / 2} 
+                ${left + depth},${top - depth / 2}`
+        }
+
+        const faces = [frontFace, topFace, rightFace, shadeRight, shadeTop];
 
         return faces;
     }
