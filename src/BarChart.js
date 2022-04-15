@@ -14,7 +14,7 @@ const BarChart = ({ data = [], dimensions = {} }) => {
     })
 
     const svgRef = useRef(null);
-    var { width, height, margin = {} } = dimensions;
+    var { width, height, depth, margin = {} } = dimensions;
     const svgWidth = width + margin.left + margin.right;
     const svgHeight = height + margin.top + margin.bottom;
 
@@ -24,7 +24,7 @@ const BarChart = ({ data = [], dimensions = {} }) => {
     const bgColors = ["#fff",
         "#ddd",
         "linear-gradient(yellow, red)",
-        "url('./img/bg-Blueberry.png') repeat"]
+        "url('./img/fruit-texture.jpg')"]
 
     const bars = ["#333",
         d => d.color,
@@ -139,15 +139,33 @@ const BarChart = ({ data = [], dimensions = {} }) => {
     }
 
     const drawGridlines = (svg, y) => {
-        const yGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
+        const yGrid = d3.axisLeft(y)
+            .tickSize(-width)
+            .tickFormat('')
+            .ticks(10)
 
         svg.append('g')
-            .attr('class', 'y axis-grid')
+            .attr('class', 'gridline')
             .call(yGrid);
 
-        d3.selectAll('line')
+        d3.selectAll('.gridline').selectAll('.tick').select('line')
             .style('stroke-width', strokeWeight[attrSlider.gridline])
             .style('opacity', 0.33 * attrSlider.gridline)
+
+        if (attrSlider.dimension === 2) {
+            const gridline = d3.selectAll('.gridline')
+            const ticks = gridline.selectAll('.tick')
+
+            ticks.select('line')
+                .attr('transform', 'translate(' + depth + ',' + -depth / 2 + ')')
+
+            ticks.append('line')
+                .attr('x2', depth)
+                .attr('y2', -depth/2)
+                .style('stroke', 'black')
+                .style('stroke-width', strokeWeight[attrSlider.gridline])
+                .style('opacity', 0.33 * attrSlider.gridline);
+        }
 
         svg.selectAll('.domain').remove()
     }
@@ -185,7 +203,7 @@ const BarChart = ({ data = [], dimensions = {} }) => {
             .attr('gradientTransform', 'rotate(90)');
         bgGradient
             .append('stop')
-            .attr('stop-color', d => d.color)
+            .attr('stop-color', d.color)
             .attr('offset', '0%');
         bgGradient
             .append('stop')
@@ -286,7 +304,7 @@ const BarChart = ({ data = [], dimensions = {} }) => {
             const barH = height - y(d.count),
                 barW = x.bandwidth();
 
-            const faces = getFaces(x(d.fruit), y(d.count), barW, barH, 50)
+            const faces = getFaces(x(d.fruit), y(d.count), barW, barH, depth)
 
             faces.forEach(d => {
                 entry.append("polygon")

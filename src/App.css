@@ -41,7 +41,7 @@ body {
 
 .bar-chart {
   border-radius: 10px;
-  background-size: contain;
+  background-size: contain !important;
 }
 
 .tick text {
