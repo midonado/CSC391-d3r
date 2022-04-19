@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import Slider from "./Slider";
 
-const BarChart = ({ data = [], dimensions = {} }) => {
+const BarChart = ({ data = [], dimensions = {}, order = [] }) => {
     const [attrSlider, setAttrSlider] = useState({
         background: 0,
         bars: 0,
@@ -114,6 +114,8 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         }
     ]
 
+    const sliders = sliderProps.map(d => Slider(d.label, d.initialValue, d.onChangeFunc, d.min, d.max))
+
     // Axes Functions
 
     const createAxes = (max) => {
@@ -139,7 +141,6 @@ const BarChart = ({ data = [], dimensions = {} }) => {
             .attr("class", "y-grid")
             .call(d3.axisLeft(y))
     }
-
 
     const drawAxisTitle = (svg, x, y) => {
         // Horizontal Axis Label
@@ -397,13 +398,13 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         drawGridlines(svg, y);
         drawEntries(attrSlider.dimension, svg, x, y);
         drawAxes(attrSlider.axis, svg, x, y);
-        
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, attrSlider]);
 
     return (<>
         <div className="toggles">
-            {sliderProps.map(d => Slider(d.label, d.initialValue, d.onChangeFunc, d.min, d.max))}
+            {order.map(d => sliders[d])}
         </div>
         <div className="chart-container">
             <svg ref={svgRef} width={svgWidth} height={svgHeight} />

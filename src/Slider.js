@@ -1,13 +1,13 @@
 import React from "react";
 
-const Slider = (label, initialValue, onChangeFunc, min, max) => {
+const Slider = (label, value, onChangeFunc, min, max) => {
     return (
         < div key={label} className="toggle-container" >
             <p>{label}</p>
             <input
                 type="range"
                 min={min} max={max}
-                value={initialValue}
+                value={value}
                 onChange={onChangeFunc}
                 step="1" />
         </div >

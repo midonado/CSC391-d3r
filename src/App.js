@@ -16,6 +16,8 @@ export default function App() {
     preLoadData();
   }, [])
 
+  const order = [0, 1, 2, 3, 4, 5].sort(() => Math.random() - Math.random())
+
   const fruitData = [
     { fruit: "Banana", count: 40, color: "yellow" },
     { fruit: "Blueberry", count: 18, color: "blue" },
@@ -26,12 +28,12 @@ export default function App() {
     { fruit: "Strawberry", count: 32, color: "red" },
     { fruit: "Watermelon", count: 29, color: "lightcoral" }];
 
-    const fruitDataSmall = [
-      { fruit: "Banana", count: 40, color: "yellow" },
-      { fruit: "Blueberry", count: 18, color: "blue" },
-      { fruit: "Orange", count: 56, color: "darkorange" },
-      { fruit: "Strawberry", count: 32, color: "red" }];
-  
+  const fruitDataSmall = [
+    { fruit: "Banana", count: 40, color: "yellow" },
+    { fruit: "Blueberry", count: 18, color: "blue" },
+    { fruit: "Orange", count: 56, color: "darkorange" },
+    { fruit: "Strawberry", count: 32, color: "red" }];
+
   const dimensions = {
     width: 960,
     height: 500,
@@ -49,6 +51,7 @@ export default function App() {
       <BarChart
         data={fruitData}
         dimensions={dimensions}
+        order={order}
       />
     </div>
   );
