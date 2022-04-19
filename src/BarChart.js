@@ -1,7 +1,7 @@
 /** MultilineChart.js */
 import React, { useRef, useEffect, useState } from "react";
-import * as d3 from "https://cdn.skypack.dev/d3@7";
-// import Bar3d from "./Bar3d.js";
+import * as d3 from "d3";
+import Slider from "./Slider";
 
 const BarChart = ({ data = [], dimensions = {} }) => {
     const [attrSlider, setAttrSlider] = useState({
@@ -37,14 +37,13 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         "5px",]
 
     // Toggle Handle Functions
-    //TODO: make less repetitive, pass attribute being toggled as prop?
 
     const handleBGChange = (event) => {
         const temp = attrSlider
         temp.background = parseInt(event.target.value)
         setAttrSlider({ ...temp });
     }
-    const handleBarChange = (event) => {
+    const handleBarsChange = (event) => {
         const temp = attrSlider
         temp.bars = parseInt(event.target.value)
         setAttrSlider({ ...temp });
@@ -69,6 +68,51 @@ const BarChart = ({ data = [], dimensions = {} }) => {
         temp.dimension = parseInt(event.target.value)
         setAttrSlider({ ...temp });
     }
+
+    var sliderProps = [
+        {
+            label: "Background",
+            initialValue: attrSlider.background,
+            onChangeFunc: handleBGChange,
+            min: 0,
+            max: 3
+        },
+        {
+            label: "Bars",
+            initialValue: attrSlider.bars,
+            onChangeFunc: handleBarsChange,
+            min: 0,
+            max: 3
+        },
+        {
+            label: "Border",
+            initialValue: attrSlider.border,
+            onChangeFunc: handleBorderChange,
+            min: 0,
+            max: 3
+        },
+        {
+            label: "Axes",
+            initialValue: attrSlider.axis,
+            onChangeFunc: handleAxisChange,
+            min: 0,
+            max: 3
+        },
+        {
+            label: "Gridline",
+            initialValue: attrSlider.gridline,
+            onChangeFunc: handleGLChange,
+            min: 0,
+            max: 3
+        },
+        {
+            label: "Dimension",
+            initialValue: attrSlider.dimension,
+            onChangeFunc: handleDimensionChange,
+            min: 0,
+            max: 2
+        }
+    ]
 
     // Axes Functions
 
@@ -161,7 +205,7 @@ const BarChart = ({ data = [], dimensions = {} }) => {
 
             ticks.append('line')
                 .attr('x2', depth)
-                .attr('y2', -depth/2)
+                .attr('y2', -depth / 2)
                 .style('stroke', 'black')
                 .style('stroke-width', strokeWeight[attrSlider.gridline])
                 .style('opacity', 0.33 * attrSlider.gridline);
@@ -221,7 +265,6 @@ const BarChart = ({ data = [], dimensions = {} }) => {
             .attr('href', `./img/bg-${d.fruit}.png`)
             .attr('width', x.bandwidth())
     }
-
 
     const getFaces = (x, y, width, height, depth) => {
         var left = x;
@@ -327,7 +370,6 @@ const BarChart = ({ data = [], dimensions = {} }) => {
                 draw2DEntries(svg, x, y);
                 d3.selectAll(".bar")
                     .style("filter", "drop-shadow(0 0 1rem rgb(0 0 0 / 0.5))")
-
                 break;
 
             case 2:
@@ -354,71 +396,14 @@ const BarChart = ({ data = [], dimensions = {} }) => {
 
         drawGridlines(svg, y);
         drawEntries(attrSlider.dimension, svg, x, y);
-        // draw3DEntries(svg, x, y);
         drawAxes(attrSlider.axis, svg, x, y);
-
-        //TODO: include title + subtitle in useEffect
-
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, attrSlider]);
 
     return (<>
         <div className="toggles">
-            <div className="toggle-container">
-                <p>Background</p>
-                <input
-                    type="range"
-                    min="0" max="3"
-                    value={attrSlider.background}
-                    onChange={handleBGChange}
-                    step="1" />
-            </div>
-            <div className="toggle-container">
-                <p>Bars</p>
-                <input
-                    type="range"
-                    min="0" max="3"
-                    value={attrSlider.bars}
-                    onChange={handleBarChange}
-                    step="1" />
-            </div>
-            <div className="toggle-container">
-                <p>Border</p>
-                <input
-                    type="range"
-                    min="0" max="3"
-                    value={attrSlider.border}
-                    onChange={handleBorderChange}
-                    step="1" />
-            </div>
-            <div className="toggle-container">
-                <p>Axes</p>
-                <input
-                    type="range"
-                    min="0" max="3"
-                    value={attrSlider.axis}
-                    onChange={handleAxisChange}
-                    step="1" />
-            </div>
-            <div className="toggle-container">
-                <p>Gridline</p>
-                <input
-                    type="range"
-                    min="0" max="3"
-                    value={attrSlider.gridline}
-                    onChange={handleGLChange}
-                    step="1" />
-            </div>
-            <div className="toggle-container">
-                <p>Dimension</p>
-                <input
-                    type="range"
-                    min="0" max="2"
-                    value={attrSlider.dimension}
-                    onChange={handleDimensionChange}
-                    step="1" />
-            </div>
-
+            {sliderProps.map(d => Slider(d.label, d.initialValue, d.onChangeFunc, d.min, d.max))}
         </div>
         <div className="chart-container">
             <svg ref={svgRef} width={svgWidth} height={svgHeight} />
