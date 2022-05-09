@@ -1,22 +1,25 @@
 /** MultilineChart.js */
 import React, { useRef, useEffect, useState } from "react";
+import axios from 'axios';
 import * as d3 from "d3";
 import Slider from "./Slider";
 
-const BarChart = ({ data = [], dimensions = {}, order = [] }) => {
+const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) => {
     const [attrSlider, setAttrSlider] = useState({
         background: 0,
         bars: 0,
         border: 0,
         axis: 0,
         gridline: 0,
-        dimension: 0
+        dimension: 0,
+        submitted: false
     })
+
 
     const svgRef = useRef(null);
     var { width, height, depth, margin = {} } = dimensions;
-    const svgWidth = width + margin.left + margin.right;
-    const svgHeight = height + margin.top + margin.bottom;
+    const svgWidth = width + margin.left + margin.right,
+        svgHeight = height + margin.top + margin.bottom;
 
     const svgEl = d3.select(svgRef.current)
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements
@@ -35,35 +38,82 @@ const BarChart = ({ data = [], dimensions = {}, order = [] }) => {
         "1px",
         "3px",
         "5px",]
-
     // Toggle Handle Functions
 
+
+    const postSubmit = async (values) => {
+        try {
+            console.log(values)
+            await axios.post('./api/data/attrsubmit',
+                {
+                    "background": values.background,
+                    "bars": values.bars,
+                    "border": values.border,
+                    "axis": values.axis,
+                    "gridline": values.gridline,
+                    "dimension": values.dimension,
+                    "sessionId": sessionId
+                });
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
+    const handleSubmit = () => {
+        const temp = attrSlider
+        postSubmit(temp)
+        temp.submitted = true
+        setAttrSlider({ ...temp });
+    }
+
+    const postChange = async (label, value) => {
+        try {
+            await axios.post('./api/data/attrchange',
+                {
+                    "attribute": label,
+                    "value": value,
+                    "sessionId": sessionId
+                });
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
     const handleBGChange = (event) => {
+        postChange("Background", event.target.value);
         const temp = attrSlider
         temp.background = parseInt(event.target.value)
         setAttrSlider({ ...temp });
     }
     const handleBarsChange = (event) => {
+        postChange("Bars", event.target.value);
         const temp = attrSlider
         temp.bars = parseInt(event.target.value)
         setAttrSlider({ ...temp });
     }
     const handleBorderChange = (event) => {
+        postChange("Border", event.target.value);
         const temp = attrSlider
         temp.border = parseInt(event.target.value)
         setAttrSlider({ ...temp });
     }
     const handleAxisChange = (event) => {
+        postChange("Axes", event.target.value);
         const temp = attrSlider
         temp.axis = parseInt(event.target.value)
+
         setAttrSlider({ ...temp });
     }
     const handleGLChange = (event) => {
+        postChange("Gridline", event.target.value);
         const temp = attrSlider
         temp.gridline = parseInt(event.target.value)
         setAttrSlider({ ...temp });
     }
     const handleDimensionChange = (event) => {
+        postChange("Dimension", event.target.value);
         const temp = attrSlider
         temp.dimension = parseInt(event.target.value)
         setAttrSlider({ ...temp });
@@ -117,12 +167,11 @@ const BarChart = ({ data = [], dimensions = {}, order = [] }) => {
     const sliders = sliderProps.map(d => Slider(d.label, d.initialValue, d.onChangeFunc, d.min, d.max))
 
     // Axes Functions
-
     const createAxes = (max) => {
         const x = d3.scaleBand()
             .rangeRound([0, width])
             .padding(0.1)
-            .domain(data.map(d => d.fruit).sort());
+            .domain(data.map(d => d.fruit));
 
         const y = d3.scaleLinear()
             .rangeRound([height, 0])
@@ -403,9 +452,10 @@ const BarChart = ({ data = [], dimensions = {}, order = [] }) => {
     }, [data, attrSlider]);
 
     return (<>
-        <div className="toggles">
+        {!attrSlider.submitted && <div className="toggles">
             {order.map(d => sliders[d])}
-        </div>
+            <button className="submit-btn" onClick={handleSubmit}>Submit</button>
+        </div>}
         <div className="chart-container">
             <svg ref={svgRef} width={svgWidth} height={svgHeight} />
         </div>
