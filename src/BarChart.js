@@ -15,7 +15,6 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
         submitted: false
     })
 
-
     const svgRef = useRef(null);
     var { width, height, depth, margin = {} } = dimensions;
     const svgWidth = width + margin.left + margin.right,
@@ -43,7 +42,6 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
 
     const postSubmit = async (values) => {
         try {
-            console.log(values)
             await axios.post('./api/data/attrsubmit',
                 {
                     "background": values.background,
@@ -447,7 +445,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
         drawGridlines(svg, y);
         drawEntries(attrSlider.dimension, svg, x, y);
         drawAxes(attrSlider.axis, svg, x, y);
-
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, attrSlider]);
 
