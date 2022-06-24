@@ -8,15 +8,11 @@ export default function App() {
   // Setting up an empty state in a use effect allowed me to go through App before 
   // going through BarChart, allowing it to render properly. Potentially due to npm start
   const [dataset, setDataset] = useState(0);
-  const [preLoad, setPreLoad] = useState([]);
+  // const [preLoad, setPreLoad] = useState([]);
   const [sessionId, setSessionId] = useState("");
 
-  const preLoadData = async () => {
-    setPreLoad([]);
-  }
-
   useEffect(() => {
-    preLoadData();
+    // preLoadData();
 
     const urlParams = new URLSearchParams(window.location.search)
     if(urlParams.has("size"))
