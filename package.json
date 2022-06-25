@@ -2,6 +2,7 @@
   "name": "d3-test",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "proxy": "https://workplace.rc.davidson.edu/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
