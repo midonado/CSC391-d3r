@@ -39,10 +39,9 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
         "5px",]
     // Toggle Handle Functions
 
-
     const postSubmit = async (values) => {
         try {
-            await axios.post('./api/data/attrsubmit',
+            await axios.post('https://workplace.rc.davidson.edu/api/data/attrsubmit',
                 {
                     "background": values.background,
                     "bars": values.bars,
@@ -50,6 +49,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
                     "axis": values.axis,
                     "gridline": values.gridline,
                     "dimension": values.dimension,
+                    "size": data.length,
                     "sessionId": sessionId
                 });
         }
@@ -67,7 +67,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
 
     const postChange = async (label, value) => {
         try {
-            await axios.post('./api/data/attrchange',
+            await axios.post('https://workplace.rc.davidson.edu/api/data/attrchange',
                 {
                     "attribute": label,
                     "value": value,

@@ -4,7 +4,7 @@
 			"path": "."
 		},
 		{
-			"path": "../../../../workspace-embodiment-service"
+			"path": "../../backend"
 		}
 	],
 	"settings": {}
