@@ -1,9 +1,3 @@
-body {
-  display: grid;
-  place-items: center;
-  height: 100vmin;
-}
-
 .App {
   text-align: center;
   display: flex;
@@ -20,6 +14,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: .3em;
+  width: 120px;
 }
 
 .toggle-container > p {
@@ -34,28 +29,11 @@ body {
   text-align: start;
 }
 
-.chart-container > div, h1, h3 {
-  line-height: 1;
-  margin-top: 0;
-}
-
 .bar-chart {
   border-radius: 10px;
   background-size: contain !important;
 }
 
-.tick text {
-  font-size: 1.4em;
-}
-
-.category {
-  text-anchor: end;
-}
-
 .x-label, .y-label {
-  font-size: 1.5em;
-}
-
-.submit-btn {
-  
+  font-size: 1.2em;
 }

@@ -8,15 +8,16 @@ export default function App() {
   // Setting up an empty state in a use effect allowed me to go through App before 
   // going through BarChart, allowing it to render properly. Potentially due to npm start
   const [dataset, setDataset] = useState(0);
-  // const [preLoad, setPreLoad] = useState([]);
+  const [prompt, setPrompt] = useState('news');
   const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
-    // preLoadData();
-
     const urlParams = new URLSearchParams(window.location.search)
-    if(urlParams.has("size"))
+    if (urlParams.has("size"))
       setDataset(urlParams.get("size"))
+
+    if (urlParams.has("prompt"))
+      setPrompt(urlParams.get("prompt"))
 
     setSessionId(uuid());
   }, [])
@@ -41,14 +42,14 @@ export default function App() {
     ]];
 
   const dimensions = {
-    width: 960,
-    height: 500,
-    depth: 40,
+    width: 500,
+    height: 290,
+    depth: 20,
     margin: {
-      top: 50,
-      right: 50,
-      bottom: 70,
-      left: 70
+      top: 25,
+      right: 30,
+      bottom: 50,
+      left: 45
     }
   }
 
@@ -59,6 +60,7 @@ export default function App() {
         dimensions={dimensions}
         order={order}
         sessionId={sessionId}
+        prompt={prompt}
       />
     </div>
   );

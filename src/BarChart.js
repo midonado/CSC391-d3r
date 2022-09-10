@@ -4,7 +4,7 @@ import axios from 'axios';
 import * as d3 from "d3";
 import Slider from "./Slider";
 
-const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) => {
+const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "", prompt }) => {
     const [attrSlider, setAttrSlider] = useState({
         background: 0,
         bars: 0,
@@ -49,7 +49,9 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
                     "axis": values.axis,
                     "gridline": values.gridline,
                     "dimension": values.dimension,
-                    "size": data.length,
+                    "datasetSize": data.length,
+                    "initValue": "max",
+                    "prompt": prompt,
                     "sessionId": sessionId
                 });
         }
@@ -71,6 +73,9 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
                 {
                     "attribute": label,
                     "value": value,
+                    "datasetSize": data.length,
+                    "initValue": "max",
+                    "prompt": prompt,
                     "sessionId": sessionId
                 });
         }
@@ -195,7 +200,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
             .attr("class", "x-label")
             .attr("text-anchor", "middle")
             .attr("x", width / 2)
-            .attr("y", height + margin.bottom * 0.65)
+            .attr("y", height + margin.bottom * 0.8)
             .text(x);
 
         // Vertical Axis Label
@@ -431,6 +436,8 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
     }
 
     useEffect(() => {
+        console.log(prompt);
+
         const svg = svgEl
             .style("background", bgColors[attrSlider.background])
             .attr("class", "bar-chart")
@@ -445,7 +452,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "" }) =>
         drawGridlines(svg, y);
         drawEntries(attrSlider.dimension, svg, x, y);
         drawAxes(attrSlider.axis, svg, x, y);
-        
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, attrSlider]);
 
