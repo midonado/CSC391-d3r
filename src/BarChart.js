@@ -50,7 +50,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "", prom
                     "gridline": values.gridline,
                     "dimension": values.dimension,
                     "datasetSize": data.length,
-                    "initValue": "max",
+                    "initValue": "min",
                     "prompt": prompt,
                     "sessionId": sessionId
                 });
@@ -74,7 +74,7 @@ const BarChart = ({ data = [], dimensions = {}, order = [], sessionId = "", prom
                     "attribute": label,
                     "value": value,
                     "datasetSize": data.length,
-                    "initValue": "max",
+                    "initValue": "min",
                     "prompt": prompt,
                     "sessionId": sessionId
                 });

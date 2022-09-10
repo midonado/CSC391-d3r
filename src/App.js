@@ -8,7 +8,7 @@ export default function App() {
   // Setting up an empty state in a use effect allowed me to go through App before 
   // going through BarChart, allowing it to render properly. Potentially due to npm start
   const [dataset, setDataset] = useState(0);
-  const [prompt, setPrompt] = useState('news');
+  const [prompt, setPrompt] = useState("");
   const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
